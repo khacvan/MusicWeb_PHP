@@ -2,53 +2,48 @@
 <?php
 session_start();
 include "./controller/connectDB.php";
-
-    if(isset($_POST['register'])) {
-        $username = mysqli_real_escape_string($conn, $_POST['username']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
-        $password = mysqli_real_escape_string($conn, $_POST['password']);
-        $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm-password']);
-
-        $check_Username = "SELECT * FROM users where username = '$username'";
-        $check_Email = "SELECT * FROM users where username = '$email'";
-
-        if(strlen($password)<6){
-            $error_message = "Mật khẩu phải có từ 6 kí tự trở lên";
-        }elseif (mysqli_num_rows(mysqli_query($conn,$check_Username))>0){
-            $error_message = "Tên tài khoản đã có người sử dụng!";
-        }
-        elseif (mysqli_num_rows(mysqli_query($conn,$check_Email))>0){
-            $error_message = "Email đã có tồn tại trong hệ thống!";
-        }
-        else{
-
-            // Kiểm tra xem mật khẩu và xác nhận mật khẩu có khớp nhau hay không
-            if ($password == $confirm_password) {
-                // Mã hóa mật khẩu bằng MD5
-                $encrypted_password = md5($password);
-
-                // Tạo câu lệnh SQL để thêm người dùng vào cơ sở dữ liệu
-                $sql = "INSERT INTO users (username, email, password, avatar, vip, roles) VALUES ('$username','$email', '$encrypted_password','admintrator.png',false,'Admintrator')";
-
-                // Thực thi câu lệnh SQL
-                if (mysqli_query($conn, $sql)) {
-                    echo "Đăng ký thành công!";
-                    header('Location: login.php');
-                } else{
-                    $error_message = "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
-                }
-            } else {
-                $error_message =  "Mật khẩu và xác nhận mật khẩu không khớp nhau.";
-            }
-        }
-    }
+include "./controller/controller.php";
 
 
-
-
-
-
-?>
+//if(isset($_POST['register'])) {
+//    $username = mysqli_real_escape_string($conn, $_POST['username']);
+//    $email = mysqli_real_escape_string($conn, $_POST['email']);
+//    $password = mysqli_real_escape_string($conn, $_POST['password']);
+//    $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm-password']);
+//
+//    $check_Username = "SELECT * FROM users where username = '$username'";
+//    $check_Email = "SELECT * FROM users where email = '$email'";
+//
+//    if(strlen($password)<6){
+//        $error_message = "Mật khẩu phải có từ 6 kí tự trở lên";
+//    }elseif (mysqli_num_rows(mysqli_query($conn,$check_Username))>0){
+//        $error_message = "Tên tài khoản đã có người sử dụng!";
+//    }
+//    elseif (mysqli_num_rows(mysqli_query($conn,$check_Email))>0){
+//        $error_message = "Email đã có tồn tại trong hệ thống!";
+//    } elseif ($password!==$confirm_password){
+//        $error_message = "Mật khẩu không trùng khớp!";
+//    }
+//    else{
+//        // Mã hóa mật khẩu bằng bcrypt
+//        $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
+//
+//        // Tạo câu lệnh SQL để thêm người dùng vào cơ sở dữ liệu
+//        $sql = "INSERT INTO users (username, email, password, avatar, vip, roles) VALUES ('$username','$email', '$encrypted_password','admintrator.png',true,true)";
+//
+//        // Thực thi câu lệnh SQL
+//        if (mysqli_query($conn, $sql)) {
+////            echo "Đăng ký thành công!";
+//            header('Location: login.php');
+//        } else{
+//            $error_message = "Lỗi: " . $sql . "<br>" . mysqli_error($conn);
+//        }
+//    }
+//}
+//
+//
+//
+//?>
 
 
 <!DOCTYPE html>
@@ -122,7 +117,7 @@ include "./controller/connectDB.php";
 				<div class="container-login100-form-btn">
 					<div class="wrap-login100-form-btn">
 						<div class="login100-form-bgbtn"></div>
-						<button class="login100-form-btn" id="register" name="register" type="submit">
+						<button class="login100-form-btn" id="register" name="register" type="submit"  data-toggle="modal" data-target="#modalSuccess">
 							Sign Up
 						</button>
 					</div>
@@ -162,6 +157,10 @@ include "./controller/connectDB.php";
 </div>
 
 
+
+
+
+
 <div id="dropDownSelect1"></div>
 
 <!--===============================================================================================-->
@@ -180,6 +179,15 @@ include "./controller/connectDB.php";
 <script src="assets/vendor/countdowntime/countdowntime.js"></script>
 <!--===============================================================================================-->
 <script src="assets/javascript/main1.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#success-modal').modal('show');
+        setTimeout(function(){
+            window.location.href = 'login.php';
+        }, 3000);
+    });
+</script>
 
 </body>
 </html>
