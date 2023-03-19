@@ -1,3 +1,8 @@
+
+setTimeout(function(){
+    document.querySelector('.alert').remove();
+}, 3000);
+
 const $ = document.querySelector.bind(document);
 const $$ = document.querySelectorAll.bind(document);
 

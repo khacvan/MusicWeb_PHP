@@ -2,32 +2,34 @@
 <?php
 session_start();
 include "./controller/connectDB.php";
+include "./controller/controller.php";
 
 
-// Xử lý đăng nhập
-if (isset($_POST['login'])) {
-    // Lấy thông tin từ form
-    $username = $_POST['username'];
-    $password = $_POST['password'];
 
-    // Xử lý giải mã password
-    $password = md5($password);
-
-    // Tìm kiếm người dùng trong database
-    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
-    $result = mysqli_query($conn, $sql);
-
-    // Kiểm tra kết quả
-    if (mysqli_num_rows($result) > 0) {
-        // Đăng nhập thành công
-        $_SESSION['username'] = $username;
-        header('Location: index.php'); // chuyển hướng đến trang chủ
-    } else {
-        // Đăng nhập thất bại
-        $error_message = "Tên đăng nhập hoặc mật khẩu sai.";
-    }
-
-}
+//// Xử lý đăng nhập
+//if (isset($_POST['login'])) {
+//    // Lấy thông tin từ form
+//    $username = $_POST['username'];
+//    $password = $_POST['password'];
+//
+//    // Xử lý giải mã password
+//    $password = md5($password);
+//
+//    // Tìm kiếm người dùng trong database
+//    $sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+//    $result = mysqli_query($conn, $sql);
+//
+//    // Kiểm tra kết quả
+//    if (mysqli_num_rows($result) > 0) {
+//        // Đăng nhập thành công
+//        $_SESSION['username'] = $username;
+//        header('Location: index.php'); // chuyển hướng đến trang chủ
+//    } else {
+//        // Đăng nhập thất bại
+//        $error_message = "Tên đăng nhập hoặc mật khẩu sai.";
+//    }
+//
+//}
 
 ?>
 
@@ -109,6 +111,17 @@ if (isset($_POST['login'])) {
                        </div>
                      <?php endif; ?>
 
+
+                    <div class="flex-col-c p-t-155">
+						<span class="txt1 p-b-17">
+							Or Sign Up Using
+						</span>
+
+                        <a href="register.php" class="txt2">
+                            Sign Up
+                        </a>
+                    </div>
+
 					<div class="txt1 text-center p-t-54 p-b-20">
 						<span>
 							Or Sign Up Using
@@ -129,15 +142,6 @@ if (isset($_POST['login'])) {
 						</a>
 					</div>
 
-					<div class="flex-col-c p-t-155">
-						<span class="txt1 p-b-17">
-							Or Sign Up Using
-						</span>
-
-						<a href="register.php" class="txt2">
-							Sign Up
-						</a>
-					</div>
 				</form>
 			</div>
 		</div>
